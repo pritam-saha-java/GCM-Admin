@@ -8,8 +8,10 @@ import {
 } from "react-router-dom";
 import { Suspense, lazy } from "react";
 const LogIn = lazy(() => import("./components/LogIn"));
-const UserManagement = lazy(() => import("./components/UserManagement"));
-const QRCodeManagement = lazy(() => import("./components/QRCodeManagement"));
+import { AdminDeposit } from "./Components/AdminDeposit";
+import CurrencyManagement from "./Components/CurrencyManagement";
+import { AdminWithdraw } from "./Components/AdminWithdraw";
+import { AdminPackages } from "./Components/AdminPackages";
 
 function App() {
   return (
@@ -20,14 +22,14 @@ function App() {
 }
 
 function AppContent() {
-  const location = useLocation();
-  const isLoginPage = location.pathname === "/";
 
   return (
         <Routes>
           <Route path="/" element={<LogIn />} />
-          <Route path="/user-management" element={<UserManagement />} />
-          <Route path="/qr-code-management" element={<QRCodeManagement />} />
+          <Route path="/currency" element={<CurrencyManagement />} />
+          <Route path="/admin-deposit" element={<AdminDeposit />} />
+          <Route path="/admin-withdraw" element={<AdminWithdraw />} />
+          <Route path="/admin-packages" element={<AdminPackages />} />
         </Routes>
   );
 }
