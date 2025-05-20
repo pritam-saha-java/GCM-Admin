@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_BASE_URL + '/api/admin/deposits';
+const API_BASE = import.meta.env.VITE_API_URL + '/api/admin/deposits';
 const adminData = JSON.parse(localStorage.getItem("adminData"));
 const headers = {
   Authorization: `${adminData?.tokenType} ${adminData?.accessToken}`,

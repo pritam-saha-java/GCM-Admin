@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+const BASE_URL = import.meta.env.VITE_API_URL;
 const ADMIN_TOKEN = JSON.parse(localStorage.getItem("adminData"))?.accessToken;
 
 const config = {
