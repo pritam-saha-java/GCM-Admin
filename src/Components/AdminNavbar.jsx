@@ -6,10 +6,9 @@ const AdminNavbar = () => {
   const navigate = useNavigate();
 
   const navLinks = [
-    { name: "Currency Management", path: "/currency" },
-    { name: "Deposit", path: "/admin-deposit" },
-    { name: "Withdraw", path: "/admin-withdraw" },
-    { name: "Packages", path: "/admin-packages" },
+    { name: "Management", path: "/admin-management" },
+    { name: "Members", path: "/admin-members" },
+    { name: "Events", path: "/admin-events" },
   ];
 
   useEffect(() => {
@@ -20,14 +19,14 @@ const AdminNavbar = () => {
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem("adminData"); // Clear local storage
-    navigate("/"); // Redirect to login
+    localStorage.removeItem("adminData");
+    navigate("/");
   };
 
   return (
     <nav className="bg-gray-800 text-white py-4 shadow-md">
       <div className="container mx-auto px-6 flex justify-between items-center">
-        <h1 className="text-xl font-bold tracking-wide">GoCloudMining Admin</h1>
+        <h1 className="text-xl font-bold tracking-wide">Red Riders Sports Admin</h1>
         <div className="flex items-center space-x-6">
           <ul className="flex space-x-6">
             {navLinks.map((link) => (

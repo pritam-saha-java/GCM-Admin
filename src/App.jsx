@@ -3,15 +3,16 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link,
-  useLocation,
 } from "react-router-dom";
 import { Suspense, lazy } from "react";
+
+// Lazy load login
 const LogIn = lazy(() => import("./components/LogIn"));
-import { AdminDeposit } from "./Components/AdminDeposit";
-import CurrencyManagement from "./Components/CurrencyManagement";
-import { AdminWithdraw } from "./Components/AdminWithdraw";
-import { AdminPackages } from "./Components/AdminPackages";
+
+// Import new admin components
+import { AdminManagement } from "./Components/AdminManagement";
+import { AdminMembers } from "./Components/AdminMembers";
+import { AdminEvents } from "./Components/AdminEvents";
 
 function App() {
   return (
@@ -22,15 +23,15 @@ function App() {
 }
 
 function AppContent() {
-
   return (
-        <Routes>
-          <Route path="/" element={<LogIn />} />
-          <Route path="/currency" element={<CurrencyManagement />} />
-          <Route path="/admin-deposit" element={<AdminDeposit />} />
-          <Route path="/admin-withdraw" element={<AdminWithdraw />} />
-          <Route path="/admin-packages" element={<AdminPackages />} />
-        </Routes>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Routes>
+        <Route path="/" element={<LogIn />} />
+        <Route path="/admin-management" element={<AdminManagement />} />
+        <Route path="/admin-members" element={<AdminMembers />} />
+        <Route path="/admin-events" element={<AdminEvents />} />
+      </Routes>
+    </Suspense>
   );
 }
 

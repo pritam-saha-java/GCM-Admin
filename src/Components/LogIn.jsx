@@ -37,7 +37,7 @@ const AdminLogin = () => {
 
       localStorage.setItem("adminData", JSON.stringify(adminDataWithTimestamp));
       setSuccess("Login successful! Redirecting...");
-      setTimeout(() => navigate("/currency"), 1000);
+      setTimeout(() => navigate("/admin-management"), 1000);
     } catch (err) {
       const msg = err.response?.data || "Login failed!";
       setError(msg);
@@ -48,7 +48,7 @@ const AdminLogin = () => {
     <section className="h-[100vh] w-full bg-gradient-to-br from-black via-gray-900 to-blue-900 flex justify-center items-center">
       <div className="backdrop-blur-xl bg-white/10 rounded-3xl p-10 shadow-2xl w-[90%] max-w-[480px]">
         <h2 className="text-3xl font-bold text-white text-center mb-3">
-          GoCloudMining Admin
+          Red Riders Sports Admin
         </h2>
         <p className="text-center text-blue-200 mb-6 text-sm tracking-wide">
           Please enter your admin credentials
