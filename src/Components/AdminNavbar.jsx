@@ -9,6 +9,9 @@ const AdminNavbar = () => {
     { name: "Management", path: "/admin-management" },
     { name: "Members", path: "/admin-members" },
     { name: "Events", path: "/admin-events" },
+    { name: "Matches", path: "/admin-match" },
+    { name: "Sports", path: "/admin-sports" },
+    { name: "Teams", path: "/admin-teams" },
   ];
 
   useEffect(() => {
