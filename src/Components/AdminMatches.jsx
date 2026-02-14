@@ -63,7 +63,8 @@ const AdminMatches = () => {
     try {
       setLoading(true);
       const res = await adminApi.get("/api/admin/matches");
-      setMatches(res?.data || []);
+
+      setMatches(res?.data?.data?.content || []);
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to load matches");
     } finally {
@@ -173,7 +174,7 @@ const AdminMatches = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {Array.isArray(matches) && matches.length > 0 ? (
-              matches.map((match) => (
+              matches.map((m) => (
                 <div
                   key={m.id}
                   className="bg-white rounded-xl border shadow p-5"
