@@ -13,6 +13,7 @@ const DEFAULT_FORM = {
   teamBId: "",
   status: "LIVE",
   timeInfo: "",
+  youtubeLink: "",
 };
 
 /* ========================================================= */
@@ -48,7 +49,6 @@ const AdminMatches = () => {
 
   const fetchTeams = async (sportId) => {
     if (!sportId) return;
-
     try {
       const res = await adminApi.get(`/api/admin/teams/by-sport/${sportId}`);
       setTeams(res?.data || []);
@@ -63,7 +63,6 @@ const AdminMatches = () => {
     try {
       setLoading(true);
       const res = await adminApi.get("/api/admin/matches");
-
       setMatches(res?.data?.data?.content || []);
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to load matches");
@@ -77,7 +76,7 @@ const AdminMatches = () => {
     fetchMatches();
   }, []);
 
-  /* ================= CREATE / UPDATE ================= */
+  /* ================= OPEN CREATE ================= */
 
   const openCreate = () => {
     setEditMatch(null);
@@ -86,13 +85,35 @@ const AdminMatches = () => {
     setModalOpen(true);
   };
 
+  /* ================= OPEN EDIT ================= */
+
+  const openEdit = async (match) => {
+    setEditMatch(match);
+
+    await fetchTeams(match.sportId);
+
+    setFormData({
+      sportId: match.sportId || "",
+      league: match.league || "",
+      venue: match.venue || "",
+      teamAId: match.teamAId || "",
+      teamBId: match.teamBId || "",
+      status: match.status || "LIVE",
+      timeInfo: match.time || "",
+      youtubeLink: match.youtubeLink || "",
+    });
+
+    setModalOpen(true);
+  };
+
+  /* ================= SUBMIT ================= */
+
   const submitMatch = async (e) => {
     e.preventDefault();
 
     if (!formData.sportId) return alert("Sport required");
     if (!formData.teamAId || !formData.teamBId)
       return alert("Both teams required");
-
     if (formData.teamAId === formData.teamBId)
       return alert("Team A and Team B cannot be same");
 
@@ -121,7 +142,6 @@ const AdminMatches = () => {
 
   const deleteMatch = async (id) => {
     if (!window.confirm("Delete match permanently?")) return;
-
     try {
       await adminApi.delete(`/api/admin/matches/${id}`);
       fetchMatches();
@@ -142,10 +162,6 @@ const AdminMatches = () => {
       alert("Failed to update status");
     }
   };
-
-  /* ========================================================= */
-  /* ========================== UI ============================ */
-  /* ========================================================= */
 
   return (
     <>
@@ -193,6 +209,18 @@ const AdminMatches = () => {
                     </div>
                   </div>
 
+                  {/* YouTube Button */}
+                  {m.youtubeLink && m.status === "LIVE" && (
+                    <a
+                      href={m.youtubeLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-flex items-center gap-2 bg-red-600 text-white px-3 py-1 rounded text-sm"
+                    >
+                      🔴 Watch Live
+                    </a>
+                  )}
+
                   <div className="mt-4 flex justify-between">
                     <span className="text-xs px-3 py-1 rounded bg-gray-100">
                       {m.status}
@@ -200,8 +228,8 @@ const AdminMatches = () => {
 
                     <div className="flex gap-2">
                       <button
-                        onClick={() => setScoreModal(m)}
-                        className="p-2 bg-blue-100 rounded"
+                        onClick={() => openEdit(m)}
+                        className="p-2 bg-yellow-100 rounded"
                       >
                         <Pencil size={16} />
                       </button>
@@ -308,10 +336,7 @@ const MatchModal = ({
           className="w-full border p-2 rounded"
           value={formData.teamAId}
           onChange={(e) =>
-            setFormData({
-              ...formData,
-              teamAId: e.target.value,
-            })
+            setFormData({ ...formData, teamAId: e.target.value })
           }
           required
         >
@@ -327,10 +352,7 @@ const MatchModal = ({
           className="w-full border p-2 rounded"
           value={formData.teamBId}
           onChange={(e) =>
-            setFormData({
-              ...formData,
-              teamBId: e.target.value,
-            })
+            setFormData({ ...formData, teamBId: e.target.value })
           }
           required
         >
@@ -347,10 +369,7 @@ const MatchModal = ({
           className="w-full border p-2 rounded"
           value={formData.league}
           onChange={(e) =>
-            setFormData({
-              ...formData,
-              league: e.target.value,
-            })
+            setFormData({ ...formData, league: e.target.value })
           }
           required
         />
@@ -360,10 +379,7 @@ const MatchModal = ({
           className="w-full border p-2 rounded"
           value={formData.venue}
           onChange={(e) =>
-            setFormData({
-              ...formData,
-              venue: e.target.value,
-            })
+            setFormData({ ...formData, venue: e.target.value })
           }
           required
         />
@@ -373,10 +389,16 @@ const MatchModal = ({
           className="w-full border p-2 rounded"
           value={formData.timeInfo}
           onChange={(e) =>
-            setFormData({
-              ...formData,
-              timeInfo: e.target.value,
-            })
+            setFormData({ ...formData, timeInfo: e.target.value })
+          }
+        />
+
+        <input
+          placeholder="YouTube Live / Highlights Link"
+          className="w-full border p-2 rounded"
+          value={formData.youtubeLink}
+          onChange={(e) =>
+            setFormData({ ...formData, youtubeLink: e.target.value })
           }
         />
 
@@ -384,10 +406,7 @@ const MatchModal = ({
           className="w-full border p-2 rounded"
           value={formData.status}
           onChange={(e) =>
-            setFormData({
-              ...formData,
-              status: e.target.value,
-            })
+            setFormData({ ...formData, status: e.target.value })
           }
         >
           <option value="LIVE">LIVE</option>
